@@ -7,8 +7,12 @@ import userEvent from '@testing-library/user-event'
 import Login from '../../components/login'
 import faker from 'faker'
 
-function buildLoginForm() {
-  return {name: faker.internet.userName(), pswd: faker.internet.password()}
+function buildLoginForm(overrides) {
+  return {
+    name: faker.internet.userName(),
+    pswd: faker.internet.password(),
+    ...overrides,
+  }
 }
 
 test('submitting the form calls onSubmit with username and password', () => {
@@ -52,8 +56,8 @@ test('submitting the form calls onSubmit with username and password', () => {
   // const name = 'Toto'
   // const pswd = 'HelloWorld'
 
-  const {name, pswd} = buildLoginForm()
-  console.log(name)
+  const {name, pswd} = buildLoginForm({pswd: 'abc'})
+  console.log(pswd)
 
   userEvent.type(screen.getByLabelText(/username/i), name)
   userEvent.type(screen.getByLabelText(/password/i), pswd)
