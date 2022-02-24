@@ -5,6 +5,11 @@ import * as React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Login from '../../components/login'
+import faker from 'faker'
+
+function buildLoginForm() {
+  return {name: faker.internet.userName(), pswd: faker.internet.password()}
+}
 
 test('submitting the form calls onSubmit with username and password', () => {
   // 🐨 create a variable called "submittedData" and a handleSubmit function that
@@ -44,8 +49,11 @@ test('submitting the form calls onSubmit with username and password', () => {
   const submitMockFn = jest.fn()
   render(<Login onSubmit={submitMockFn} />)
 
-  const name = 'Toto'
-  const pswd = 'HelloWorld'
+  // const name = 'Toto'
+  // const pswd = 'HelloWorld'
+
+  const {name, pswd} = buildLoginForm()
+  console.log(name)
 
   userEvent.type(screen.getByLabelText(/username/i), name)
   userEvent.type(screen.getByLabelText(/password/i), pswd)
