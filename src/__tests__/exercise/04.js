@@ -6,14 +6,22 @@ import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Login from '../../components/login'
 import faker from 'faker'
+import {build, fake} from '@jackfranklin/test-data-bot'
 
-function buildLoginForm(overrides) {
-  return {
-    name: faker.internet.userName(),
-    pswd: faker.internet.password(),
-    ...overrides,
-  }
-}
+const buildLoginForm = build({
+  fields: {
+    name: fake(faker => faker.internet.userName()),
+    pswd: fake(faker => faker.internet.password()),
+  },
+})
+
+// function buildLoginForm(overrides) {
+//   return {
+//     name: faker.internet.userName(),
+//     pswd: faker.internet.password(),
+//     ...overrides,
+//   }
+// }
 
 test('submitting the form calls onSubmit with username and password', () => {
   // 🐨 create a variable called "submittedData" and a handleSubmit function that
