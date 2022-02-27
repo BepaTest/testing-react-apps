@@ -2,9 +2,10 @@
 // http://localhost:3000/counter-hook
 
 import * as React from 'react'
-import {render, screen, act} from '@testing-library/react'
+// import {render, screen, act} from '@testing-library/react'
 // import userEvent from '@testing-library/user-event'
 import useCounter from '../../components/use-counter'
+import {renderHook, act} from '@testing-library/react-hooks'
 // import Counter from 'components/counter'
 
 // 🐨 create a simple function component that uses the useCounter hook
@@ -54,18 +55,20 @@ import useCounter from '../../components/use-counter'
 // })
 
 //extra 2
-function setup({initialProps} = {}) {
-  const result = {}
-  function TestComponent() {
-    result.current = useCounter(initialProps)
-    return null
-  }
-  render(<TestComponent />)
-  return result
-}
+// function setup({initialProps} = {}) {
+//   const result = {}
+//   function TestComponent() {
+//     result.current = useCounter(initialProps)
+//     return null
+//   }
+//   render(<TestComponent />)
+//   return result
+// }
+
+// extra 3
 
 test('exposes the count and increment/decrement functions', () => {
-  const result = setup()
+  const {result} = renderHook(useCounter)
   expect(result.current.count).toBe(0)
   act(() => result.current.increment())
   expect(result.current.count).toBe(1)
@@ -74,15 +77,17 @@ test('exposes the count and increment/decrement functions', () => {
 })
 
 test('allows customization of the initial count', () => {
-  const result = setup({initialProps: {initialCount: 3}})
+  const {result} = renderHook(useCounter, {initialProps: {initialCount: 3}})
   expect(result.current.count).toBe(3)
 })
 
 test('allows customization of the step', () => {
-  const result = setup({initialProps: {step: 2}})
+  const {result} = renderHook(useCounter, {initialProps: {step: 2}})
   expect(result.current.count).toBe(0)
   act(() => result.current.increment())
   expect(result.current.count).toBe(2)
   act(() => result.current.decrement())
   expect(result.current.count).toBe(0)
+
+  //we can also use rerender to check if it renders correctly if we change props like {step:4}
 })
